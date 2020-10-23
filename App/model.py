@@ -197,7 +197,6 @@ def getaccidentesMByRange(analyzer, initialDate, finalDate):
     while (it.hasNext(lstiterator)):
         lstdate = it.next(lstiterator)
         totaccidentes += lt.size(lstdate['lstaccidentes'])
-        print (lstdate['lstaccidentes'])
     return totaccidentes
 
 # ==============================
