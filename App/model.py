@@ -21,6 +21,7 @@
  """
 import config
 from DISClib.ADT import list as lt
+from DISClib.DataStructures import listiterator as it
 from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.ADT import map as m
@@ -52,7 +53,7 @@ def newAnalyzer():
                 }
 
     analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareIds)
-    analyzer['dateIndex'] = om.newMap(omaptype='BST',
+    analyzer['dateIndex'] = om.newMap(omaptype='RBT',
                                       comparefunction=compareDates)
     return analyzer
 
@@ -185,6 +186,19 @@ def getaccidentesByRangeCode(analyzer, StartDate, severity):
         if numaccidentes is not None:
             return m.size(me.getValue(numaccidentes)['lstseverity'])
         return 0
+
+def getaccidentesMByRange(analyzer, initialDate, finalDate):
+    """
+    Retorna el numero de accidentes en un rango de fechas.
+    """
+    lst = om.values(analyzer['dateIndex'], initialDate, finalDate)
+    lstiterator = it.newIterator(lst)
+    totaccidentes = 0
+    while (it.hasNext(lstiterator)):
+        lstdate = it.next(lstiterator)
+        totaccidentes += lt.size(lstdate['lstaccidentes'])
+        print (lstdate['lstaccidentes'])
+    return totaccidentes
 
 # ==============================
 # Funciones de Comparacion

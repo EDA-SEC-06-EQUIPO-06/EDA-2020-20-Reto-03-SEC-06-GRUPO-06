@@ -88,7 +88,10 @@ while True:
 
     elif int(inputs[0]) == 4:
         print("\nBuscando los accidentes anteriores a una fecha: ")
-
+        initialDate=str(controller.minKey(cont))
+        finalDate = input("Fecha (YYYY-MM-DD): ")
+        total = controller.getaccidentesMByRange(cont, initialDate, finalDate)
+        print("\nTotal de accidentes antes de la fecha: " + str(total))
     else:
         sys.exit(0)
 sys.exit(0)
