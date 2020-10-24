@@ -88,7 +88,27 @@ while True:
 
     elif int(inputs[0]) == 4:
         print("\nBuscando los accidentes anteriores a una fecha: ")
-
+    elif int (inputs[0]) ==5:
+        StartDate = input("Fecha inicial (YYYY-MM-DD): ")
+        EndDate = input("Fecha final (YYYY-MM-DD): ")
+        print("\nBuscando los accidentes en un rango de fechas: ")
+        accidentes_rango = controller.getaccidentesRangoFechas(cont, StartDate, EndDate)
+        estado = accidentes_rango[0][0]
+        num_estado = accidentes_rango[0][1]
+        fecha = accidentes_rango[1][0]
+        num_fecha = accidentes_rango[1][1]
+        print("\nEn este rango de fechas el estado con más accidentes es: "+ estado +" con "+ str(num_estado) + " accidentes ")
+        print("\nLa fecha con mayor número de accidentes es: "+ fecha +" con "+ str(num_fecha) + " accidentes ")
+    elif int (inputs[0]) ==6:
+        Start_Time = input("Hora inicial (Ejemplo: 16:00): ")
+        End_Time = input("Hora final(Ejemplo: 17:30): ")
+        print("\nBuscando los accidentes en un rango de horas por severidad: ")
+        accidentes_hora = controller.getaccidentesbyRangoHoras(cont, Start_Time, End_Time)
+        print("\nEl total de accidentes agrupados por severidad en este rango de hora es: ")
+        print("\nSeveridad 1:", accidentes_hora["1"])
+        print("\nSeveridad 2:", accidentes_hora["2"])
+        print("\nSeveridad 3:", accidentes_hora["3"])
+        print("\nSeveridad 4:", accidentes_hora["4"])
     else:
         sys.exit(0)
 sys.exit(0)

@@ -26,6 +26,7 @@ from DISClib.DataStructures import mapentry as me
 from DISClib.ADT import map as m
 import datetime
 assert config
+import operator
 
 """
 En este archivo definimos los TADs que vamos a usar,
@@ -51,8 +52,8 @@ def newAnalyzer():
                 'dateIndex': None
                 }
 
-    analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareIds)
-    analyzer['dateIndex'] = om.newMap(omaptype='BST',
+    analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareseverity)
+    analyzer['dateIndex'] = om.newMap(omaptype='RBT',
                                       comparefunction=compareDates)
     return analyzer
 
@@ -186,6 +187,80 @@ def getaccidentesByRangeCode(analyzer, StartDate, severity):
             return m.size(me.getValue(numaccidentes)['lstseverity'])
         return 0
 
+def informacion_accidentes(cantidad_accidentes, accidents, dicc_estados):
+    for j in range(cantidad_accidentes):
+        accidente = lt.getElement(accidents, j)
+        if accidente["value"] is not None:
+           lista_accidentes = accidente["value"]["lstseverity"]
+           primer_accidente = lt.firstElement(lista_accidentes)  
+           fecha = primer_accidente["Start_Time"][0:10]
+           tamanio_lst = lt.size(lista_accidentes)
+           for i in range(tamanio_lst):
+               elemento = lt.getElement(lista_accidentes, i)
+               estado = elemento["State"]
+               if estado not in dicc_estados:
+                  dicc_estados[estado] = 1
+               else:
+                  dicc_estados[estado] += 1              
+    return fecha, tamanio_lst, dicc_estados
+                      
+def getaccidentesRangoFechas(analyzer, StartDate, EndDate):
+    """
+    Para una fecha inicial y final, retorna el numero de accidentes
+    e indica la categoría de accidentes más reportada en ese rango.
+    """
+    lst = om.values(analyzer['dateIndex'], StartDate, EndDate)
+    mayor = 0
+    dicc_estados = {"1":0,"2":0,"3":0,"4":0}
+    for i in range(lt.size(lst)):
+        accidentes_dia = lt.getElement(lst, i)['severityIndex']["table"]
+        cantidad_accidentes = lt.size(accidentes_dia)   
+        info = informacion_accidentes(cantidad_accidentes, accidentes_dia, dicc_estados) 
+        conteo = info[1] 
+        if conteo > mayor:
+           mayor = conteo
+           fecha_mayor = info[0]
+    ordenar_dicc = sorted(dicc_estados.items(), key=operator.itemgetter(1), reverse=True)
+    estado_mas = ordenar_dicc[0]         
+    res = [estado_mas,(fecha_mayor, mayor)] 
+    return res     
+
+def total_severidad_hora(cantidad_accidentes, accidents, Start_Time, End_Time, dicc_severidad):
+    for j in range(cantidad_accidentes):
+        accidente = lt.getElement(accidents, j)
+        if accidente["value"] is not None:
+           lista_accidentes = accidente["value"]["lstseverity"]
+           tamanio_lst = lt.size(lista_accidentes)
+           for i in range(tamanio_lst):
+               elemento = lt.getElement(lista_accidentes, i)
+               hora_inicial = elemento["Start_Time"][11:16]
+               hora_final = elemento["End_Time"][11:16]
+               if Start_Time < hora_inicial and End_Time > hora_final:
+                  for severidad in dicc_severidad:
+                      if severidad == elemento["Severity"]:
+                         dicc_severidad[severidad] += 1       
+    return dicc_severidad  
+
+def getaccidentesRangoHoras(analyzer, Start_Time, End_Time):
+    """
+    Para una rango de horas, retorna el numero de accidentes
+    agrupados por severidad y su porcentaje contra el total de
+    accidentes reportados
+    """    
+    lst = om.values(analyzer['dateIndex'], minKey(analyzer), maxKey(analyzer))
+    dicc_severidad = {"1":0,"2":0,"3":0,"4":0}
+    for i in range(lt.size(lst)):
+        accidentes_dia = lt.getElement(lst, i)['severityIndex']["table"]
+        cantidad_accidentes = lt.size(accidentes_dia)   
+        total_severidad = total_severidad_hora(cantidad_accidentes, accidentes_dia, Start_Time, End_Time, dicc_severidad)
+    total_accidentes = 0
+    for severidad in dicc_severidad:
+        total_accidentes += dicc_severidad[severidad]
+    for severidad in total_severidad:    
+        porcentaje = round(int(dicc_severidad[severidad]) / total_accidentes, 2)
+        dicc_severidad[severidad] = ("Cantidad accidentes: " + str(dicc_severidad[severidad]), "Porcentaje: "+str((porcentaje * 100)))  
+    return dicc_severidad        
+
 # ==============================
 # Funciones de Comparacion
 # ==============================
@@ -224,4 +299,5 @@ def compareseverity(severity1, severity2):
     elif (severity1 > severity):
         return 1
     else:
-        return -1
+        return -1      
+ 

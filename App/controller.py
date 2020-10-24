@@ -107,3 +107,11 @@ def getaccidentesByRangeCode(analyzer, StartDate, severity):
     """
     StartDate = datetime.datetime.strptime(StartDate, '%Y-%m-%d')
     return model.getaccidentesByRangeCode(analyzer, StartDate.date(), severity)
+
+def getaccidentesRangoFechas(analyzer, StartDate, EndDate):
+    StartDate = datetime.datetime.strptime(StartDate, '%Y-%m-%d')
+    EndDate = datetime.datetime.strptime(EndDate, '%Y-%m-%d')
+    return model.getaccidentesRangoFechas(analyzer, StartDate.date(), EndDate.date())
+
+def getaccidentesbyRangoHoras(analyzer, StartTime, EndTime):
+    return model.getaccidentesRangoHoras(analyzer, StartTime, EndTime)  
