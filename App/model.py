@@ -53,11 +53,7 @@ def newAnalyzer():
                 'dateIndex': None
                 }
 
-<<<<<<< HEAD
     analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareseverity)
-=======
-    analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareIds)
->>>>>>> dd57e9424fc74feb3dbeda5f554ab0bc9d5d62a7
     analyzer['dateIndex'] = om.newMap(omaptype='RBT',
                                       comparefunction=compareDates)
     return analyzer
@@ -176,7 +172,6 @@ def maxKey(analyzer):
 
     """
     return om.maxKey(analyzer['dateIndex'])
-
 
 
 def getaccidentesByRangeCode(analyzer, StartDate, severity):
