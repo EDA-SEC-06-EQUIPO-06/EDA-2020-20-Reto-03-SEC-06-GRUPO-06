@@ -107,6 +107,7 @@ def getaccidentesByRangeCode(analyzer, StartDate, severity):
     """
     StartDate = datetime.datetime.strptime(StartDate, '%Y-%m-%d')
     return model.getaccidentesByRangeCode(analyzer, StartDate.date(), severity)
+<<<<<<< HEAD
 
 def getaccidentesRangoFechas(analyzer, StartDate, EndDate):
     StartDate = datetime.datetime.strptime(StartDate, '%Y-%m-%d')
@@ -115,3 +116,14 @@ def getaccidentesRangoFechas(analyzer, StartDate, EndDate):
 
 def getaccidentesbyRangoHoras(analyzer, StartTime, EndTime):
     return model.getaccidentesRangoHoras(analyzer, StartTime, EndTime)  
+=======
+    
+def getaccidentesMByRange(analyzer, initialDate, finalDate):
+    """
+    Retorna el total de crimenes en un rango de fechas
+    """
+    initialDate = datetime.datetime.strptime(initialDate, '%Y-%m-%d')
+    finalDate = datetime.datetime.strptime(finalDate, '%Y-%m-%d')
+    return model.getaccidentesMByRange(analyzer, initialDate.date(),
+                                  finalDate.date())
+>>>>>>> dd57e9424fc74feb3dbeda5f554ab0bc9d5d62a7
