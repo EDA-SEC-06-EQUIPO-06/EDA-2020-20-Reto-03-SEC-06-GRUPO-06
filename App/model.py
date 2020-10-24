@@ -264,7 +264,8 @@ def getaccidentesRangoHoras(analyzer, Start_Time, End_Time):
     for severidad in total_severidad:    
         porcentaje = round(int(dicc_severidad[severidad]) / total_accidentes, 2)
         dicc_severidad[severidad] = ("Cantidad accidentes: " + str(dicc_severidad[severidad]), "Porcentaje: "+str((porcentaje * 100)))  
-    return dicc_severidad        
+    return dicc_severidad  
+          
 def getaccidentesMByRange(analyzer, initialDate, finalDate):
     """
     Retorna el numero de accidentes en un rango de fechas.
