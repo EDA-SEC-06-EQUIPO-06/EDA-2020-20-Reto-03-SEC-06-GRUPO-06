@@ -21,6 +21,7 @@
  """
 import config
 from DISClib.ADT import list as lt
+from DISClib.DataStructures import listiterator as it
 from DISClib.ADT import orderedmap as om
 from DISClib.DataStructures import mapentry as me
 from DISClib.ADT import map as m
@@ -52,7 +53,11 @@ def newAnalyzer():
                 'dateIndex': None
                 }
 
+<<<<<<< HEAD
     analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareseverity)
+=======
+    analyzer['accidentes'] = lt.newList('SINGLE_LINKED', compareIds)
+>>>>>>> dd57e9424fc74feb3dbeda5f554ab0bc9d5d62a7
     analyzer['dateIndex'] = om.newMap(omaptype='RBT',
                                       comparefunction=compareDates)
     return analyzer
@@ -260,6 +265,17 @@ def getaccidentesRangoHoras(analyzer, Start_Time, End_Time):
         porcentaje = round(int(dicc_severidad[severidad]) / total_accidentes, 2)
         dicc_severidad[severidad] = ("Cantidad accidentes: " + str(dicc_severidad[severidad]), "Porcentaje: "+str((porcentaje * 100)))  
     return dicc_severidad        
+def getaccidentesMByRange(analyzer, initialDate, finalDate):
+    """
+    Retorna el numero de accidentes en un rango de fechas.
+    """
+    lst = om.values(analyzer['dateIndex'], initialDate, finalDate)
+    lstiterator = it.newIterator(lst)
+    totaccidentes = 0
+    while (it.hasNext(lstiterator)):
+        lstdate = it.next(lstiterator)
+        totaccidentes += lt.size(lstdate['lstaccidentes'])
+    return totaccidentes
 
 # ==============================
 # Funciones de Comparacion
