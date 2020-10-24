@@ -53,7 +53,7 @@ def printMenu():
     print("2- Cargar información de accidentes")
     print("3- Consultar los accidentes en una fecha por severidad")
     print("4- Consultar los accidentes anteriores a una fecha")
-    print("5- Consultar los accidentes en un rango de fechas")
+    print("5- Requerimento x")
     print("6- Consultar los accidentes por rango de horas")
     print("0- Salir")
     print("*******************************************")
@@ -87,12 +87,7 @@ while True:
         print("\nTotal de accidentes de severidad " + "'" + severity + "'" + " en esa fecha:  " + str(numaccidentes))
 
     elif int(inputs[0]) == 4:
-        initialDate=str(controller.minKey(cont))
-        finalDate = input("Fecha (YYYY-MM-DD): ")
-        total = controller.getaccidentesMByRange(cont, initialDate, finalDate)
         print("\nBuscando los accidentes anteriores a una fecha: ")
-        print("\nTotal de accidentes antes de la fecha: " + str(total))
-
     elif int (inputs[0]) ==5:
         StartDate = input("Fecha inicial (YYYY-MM-DD): ")
         EndDate = input("Fecha final (YYYY-MM-DD): ")
@@ -113,7 +108,7 @@ while True:
         print("\nSeveridad 1:", accidentes_hora["1"])
         print("\nSeveridad 2:", accidentes_hora["2"])
         print("\nSeveridad 3:", accidentes_hora["3"])
-        print("\nSeveridad 4:", accidentes_hora["4"]) 
+        print("\nSeveridad 4:", accidentes_hora["4"])
     else:
         sys.exit(0)
 sys.exit(0)
